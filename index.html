@@ -585,10 +585,10 @@
       const isEmpty = !studentStr || studentStr.trim() === '';
 
       if (isEmpty) {
-        seat.className = 'empty-seat rounded-2xl p-1.5 flex flex-col justify-center items-center h-14 sm:h-16 text-slate-400 select-none';
+        seat.className = 'empty-seat rounded-xl p-1 flex-1 flex flex-col justify-center items-center text-slate-400 select-none min-h-0';
         seat.innerHTML = `
-          <span class="text-[10px] font-bold text-slate-400/80 font-mono">#${globalIdx}</span>
-          <span class="text-xs font-bold tracking-wider text-slate-400">空位</span>
+          <span class="text-[9px] font-bold text-slate-400/80 font-mono leading-none">#${globalIdx}</span>
+          <span class="text-xs font-bold tracking-wider text-slate-400 mt-0.5">空位</span>
         `;
         return seat;
       }
@@ -596,7 +596,7 @@
       const parsed = parseStudent(studentStr);
       const score = getStudentScore(currentClass, studentStr);
 
-      seat.className = `student-seat rounded-2xl p-1 sm:p-1.5 flex flex-col justify-between items-center h-14 sm:h-16 text-white cursor-pointer relative overflow-hidden transition ${isAbsent ? 'absent-seat' : ''}`;
+      seat.className = `student-seat rounded-xl p-1 sm:p-1.5 flex-1 flex flex-col justify-between items-center text-white cursor-pointer relative overflow-hidden transition min-h-0 ${isAbsent ? 'absent-seat' : ''}`;
       
       let badgeHtml = '';
       if (isAbsent) {
@@ -635,8 +635,8 @@
           ${badgeHtml}
           ${scoreControlHtml}
         </div>
-        <div class="w-full text-center px-0.5 flex-1 flex items-center justify-center">
-          <span class="text-xs sm:text-sm font-black tracking-wide truncate w-full ${isAbsent ? 'line-through text-slate-500' : 'drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] text-white'}">
+        <div class="w-full text-center px-0.5 flex-1 flex items-center justify-center min-h-0">
+          <span class="text-xs sm:text-sm lg:text-base font-black tracking-wide truncate w-full ${isAbsent ? 'line-through text-slate-500' : 'drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] text-white'}">
             ${parsed.name}
           </span>
         </div>
@@ -659,14 +659,14 @@
       for (let t = 1; t <= 8; t++) {
         const tableCard = document.createElement('div');
         tableCard.id = `table-group-${t}`;
-        tableCard.className = 'bg-white/80 backdrop-blur-md border border-white/90 rounded-3xl p-2.5 sm:p-3 shadow-[0_6px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)] transition flex flex-col justify-between relative';
+        tableCard.className = 'bg-white/85 backdrop-blur-md border border-white/90 rounded-2xl p-1.5 sm:p-2.5 shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] transition flex flex-col justify-between relative h-full min-h-0';
 
         const rowContainer = document.createElement('div');
-        rowContainer.className = 'grid grid-cols-5 gap-1.5 sm:gap-2 items-center';
+        rowContainer.className = 'grid grid-cols-5 gap-1.5 sm:gap-2 items-stretch h-full w-full';
 
-        // 左邊 3 個座位 (1, 2, 3)
+        // 左邊 3 個座位 (1, 2, 3) 垂直均分填滿
         const leftCol = document.createElement('div');
-        leftCol.className = 'col-span-2 flex flex-col gap-1.5';
+        leftCol.className = 'col-span-2 flex flex-col gap-1 sm:gap-1.5 h-full';
         for (let i = 1; i <= 3; i++) {
           const globalIdx = (t - 1) * 6 + i;
           const studentStr = seats[globalIdx - 1];
@@ -674,36 +674,36 @@
           leftCol.appendChild(createSeatElement(globalIdx, studentStr, isAbsent, curClass));
         }
 
-        // 中央 夢幻蜜糖奶油黃大畫桌
+        // 中央 夢幻蜜糖奶油黃大畫桌 (滿高彈性延展)
         const deskWood = document.createElement('div');
         deskWood.id = `desk-wood-${t}`;
-        deskWood.className = 'dream-desk col-span-1 h-full min-h-[180px] sm:min-h-[210px] rounded-2xl flex flex-col items-center justify-between py-2.5 text-amber-900 shadow-sm';
+        deskWood.className = 'dream-desk col-span-1 h-full rounded-xl flex flex-col items-center justify-between py-1.5 sm:py-2 text-amber-900 shadow-sm';
         
         let deskControlsHtml = '';
         if (isTeacherLoggedIn) {
           deskControlsHtml = `
-            <div class="flex items-center gap-1 bg-white/90 backdrop-blur-sm p-1 rounded-xl shadow-md border border-amber-200 mt-1" onclick="event.stopPropagation()">
-              <button onclick="changeDeskGroupScore(${t}, -1, event)" title="本桌全員 -1 星" class="w-5 h-5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-black text-xs flex items-center justify-center leading-none active:scale-90 transition border border-slate-300/60">－</button>
-              <button onclick="changeDeskGroupScore(${t}, 1, event)" title="本桌全員 +1 星" class="w-5 h-5 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-400 hover:brightness-105 text-amber-950 font-black text-xs flex items-center justify-center leading-none active:scale-90 transition shadow-sm">＋</button>
+            <div class="flex items-center gap-0.5 bg-white/90 backdrop-blur-sm p-0.5 rounded-lg shadow-md border border-amber-200 mt-0.5" onclick="event.stopPropagation()">
+              <button onclick="changeDeskGroupScore(${t}, -1, event)" title="本桌全員 -1 星" class="w-4 h-4 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 font-black text-[10px] flex items-center justify-center leading-none active:scale-90 transition border border-slate-300/60">－</button>
+              <button onclick="changeDeskGroupScore(${t}, 1, event)" title="本桌全員 +1 星" class="w-4 h-4 rounded bg-gradient-to-r from-amber-400 to-yellow-400 hover:brightness-105 text-amber-950 font-black text-[10px] flex items-center justify-center leading-none active:scale-90 transition shadow-sm">＋</button>
             </div>
           `;
         } else {
-          deskControlsHtml = `<div class="h-2"></div>`;
+          deskControlsHtml = `<div class="h-1"></div>`;
         }
 
         deskWood.innerHTML = `
-          <div class="text-base filter drop-shadow-[0_1px_2px_rgba(0,0,0,0.15)]">🎨</div>
-          <div class="flex flex-col items-center font-black tracking-widest leading-none text-amber-950">
-            <span class="text-xs font-bold opacity-80">第</span>
-            <span class="text-base sm:text-xl font-black my-0.5 scale-110 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">${t}</span>
-            <span class="text-xs font-bold opacity-80">桌</span>
+          <div class="text-sm sm:text-base filter drop-shadow-[0_1px_2px_rgba(0,0,0,0.15)] leading-none">🎨</div>
+          <div class="flex flex-col items-center font-black tracking-widest leading-tight text-amber-950 my-auto">
+            <span class="text-[10px] sm:text-xs font-bold opacity-80">第</span>
+            <span class="text-sm sm:text-lg font-black scale-110 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">${t}</span>
+            <span class="text-[10px] sm:text-xs font-bold opacity-80">桌</span>
           </div>
           ${deskControlsHtml}
         `;
 
-        // 右邊 3 個座位 (4, 5, 6)
+        // 右邊 3 個座位 (4, 5, 6) 垂直均分填滿
         const rightCol = document.createElement('div');
-        rightCol.className = 'col-span-2 flex flex-col gap-1.5';
+        rightCol.className = 'col-span-2 flex flex-col gap-1 sm:gap-1.5 h-full';
         for (let i = 4; i <= 6; i++) {
           const globalIdx = (t - 1) * 6 + i;
           const studentStr = seats[globalIdx - 1];
