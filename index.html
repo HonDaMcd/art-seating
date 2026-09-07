@@ -145,68 +145,68 @@
 </head>
 <body class="h-full w-full flex flex-col p-2 select-none box-border">
 
-  <!-- 頂部一體化控制列（高度自動收縮，不佔用空間） -->
-  <header class="w-full flex-shrink-0 bg-white/80 backdrop-blur-xl shadow-sm border border-white/80 rounded-2xl px-3 py-1.5 mb-2 flex flex-wrap items-center justify-between gap-2">
-    <div class="flex items-center gap-2.5 flex-wrap">
-      <div class="flex items-center gap-1.5">
-        <span class="text-xl">🎨</span>
-        <h1 class="text-base font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#db2777] via-[#9333ea] to-[#2563eb]">
+  <!-- 頂部一體化控制列（高度加倍，放大標題、按鈕與文字） -->
+  <header class="w-full flex-shrink-0 bg-white/85 backdrop-blur-xl shadow-md border border-white/90 rounded-2xl px-4 py-3 mb-2 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3.5 flex-wrap">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl sm:text-3xl">🎨</span>
+        <h1 class="text-lg sm:text-xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#db2777] via-[#9333ea] to-[#2563eb]">
           美術教室座位表
         </h1>
       </div>
 
-      <div class="h-4 w-px bg-slate-300/60 hidden sm:block"></div>
+      <div class="h-6 w-px bg-slate-300/80 hidden sm:block"></div>
 
       <!-- 班級選擇與人數 -->
-      <div class="flex items-center gap-1.5">
-        <label for="classSelect" class="text-xs font-bold text-slate-600">班級：</label>
-        <select id="classSelect" onchange="handleClassChange()" class="bg-white/90 border border-purple-200 text-purple-900 text-xs font-bold rounded-xl px-2.5 py-0.5 focus:ring-1 focus:ring-purple-300 focus:outline-none cursor-pointer shadow-sm">
+      <div class="flex items-center gap-2">
+        <label for="classSelect" class="text-xs sm:text-sm font-bold text-slate-700">班級：</label>
+        <select id="classSelect" onchange="handleClassChange()" class="bg-white border border-purple-200 text-purple-900 text-xs sm:text-sm font-bold rounded-xl px-3 py-1.5 focus:ring-2 focus:ring-purple-300 focus:outline-none cursor-pointer shadow-sm">
         </select>
-        <span id="classCountBadge" class="bg-amber-100 text-amber-800 border border-amber-200 text-xs font-black px-2 py-0.5 rounded-lg shadow-sm">
+        <span id="classCountBadge" class="bg-amber-100 text-amber-800 border border-amber-200 text-xs sm:text-sm font-black px-2.5 py-1 rounded-xl shadow-sm">
           42 人
         </span>
       </div>
 
       <!-- 缺席狀態摘要 -->
-      <div id="absentSummaryTag" class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-0.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+      <div id="absentSummaryTag" class="flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
         <span>📋 缺席：</span>
         <span id="absentListText" class="font-bold">全員到齊 ✨</span>
       </div>
     </div>
 
     <!-- 教師工具與登入按鈕 -->
-    <div class="flex items-center gap-1.5 flex-wrap">
-      <div id="teacherActionGroup" class="hidden items-center gap-1.5 flex-wrap">
-        <button id="btnShuffle" onclick="shuffleSeatsWithAnimation()" class="bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 hover:brightness-105 text-white text-xs font-black px-2.5 py-1 rounded-xl shadow-sm flex items-center gap-1 active:scale-95 transition">
+    <div class="flex items-center gap-2 flex-wrap">
+      <div id="teacherActionGroup" class="hidden items-center gap-2 flex-wrap">
+        <button id="btnShuffle" onclick="shuffleSeatsWithAnimation()" class="bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 hover:brightness-105 text-white text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5 active:scale-95 transition">
           <span>🎲</span> 隨機排位
         </button>
 
-        <button id="btnDutyRaffle" onclick="startDutyRaffle()" class="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:brightness-105 text-white text-xs font-black px-2.5 py-1 rounded-xl shadow-sm flex items-center gap-1 active:scale-95 transition">
+        <button id="btnDutyRaffle" onclick="startDutyRaffle()" class="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:brightness-105 text-white text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5 active:scale-95 transition">
           <span>🧹</span> 今日值日
         </button>
 
-        <button id="btnAttendanceToggle" onclick="toggleAttendanceMode()" class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-xs font-bold px-2.5 py-1 rounded-xl shadow-sm flex items-center gap-1 active:scale-95 transition">
+        <button id="btnAttendanceToggle" onclick="toggleAttendanceMode()" class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5 active:scale-95 transition">
           <span>📝</span> <span id="attendanceBtnText">點名缺席</span>
         </button>
 
-        <button onclick="saveTodayClassLog()" title="將今日出缺席與計分存為歷史日誌" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:brightness-105 text-white text-xs font-black px-2.5 py-1 rounded-xl shadow-sm flex items-center gap-1 active:scale-95 transition">
+        <button onclick="saveTodayClassLog()" title="將今日出缺席與計分存為歷史日誌" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:brightness-105 text-white text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5 active:scale-95 transition">
           <span>💾</span> 封存今日
         </button>
 
-        <button onclick="openHistoryModal()" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold px-2.5 py-1 rounded-xl shadow-sm flex items-center gap-1 active:scale-95 transition">
+        <button onclick="openHistoryModal()" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5 active:scale-95 transition">
           <span>📅</span> 課堂日誌
         </button>
 
-        <button onclick="openClassModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold px-2.5 py-1 rounded-xl shadow-sm flex items-center gap-1 active:scale-95 transition">
+        <button onclick="openClassModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5 active:scale-95 transition">
           <span>⚙️</span> 管理名單
         </button>
       </div>
 
-      <div class="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
-        <span id="teacherStatusBadge" class="text-xs font-bold px-2 py-0.5 rounded-xl bg-slate-100 text-slate-500 border border-slate-200">
+      <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+        <span id="teacherStatusBadge" class="text-xs sm:text-sm font-bold px-2.5 py-1 rounded-xl bg-slate-100 text-slate-500 border border-slate-200">
           學生檢視
         </span>
-        <button id="authBtn" onclick="toggleAuthModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:brightness-105 text-white text-xs font-black px-3 py-1 rounded-xl shadow-sm flex items-center gap-1 transition active:scale-95">
+        <button id="authBtn" onclick="toggleAuthModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:brightness-105 text-white text-xs sm:text-sm font-black px-4 py-1.5 rounded-xl shadow-md flex items-center gap-1.5 transition active:scale-95">
           <span>🔑</span> <span id="authBtnText">教師登入</span>
         </button>
       </div>
@@ -214,15 +214,15 @@
   </header>
 
   <!-- 滿版主舞台容器（flex-1 撐滿剩餘視窗垂直高度） -->
-  <main class="w-full flex-1 min-h-0 bg-white/70 backdrop-blur-xl rounded-2xl border border-white/80 shadow-md p-2 flex flex-col box-border">
+  <main class="w-full flex-1 min-h-0 bg-white/70 backdrop-blur-xl rounded-2xl border border-white/80 shadow-md p-2.5 flex flex-col box-border">
     
-    <!-- 講台看板：螢幕／白板（高度收斂，讓位給桌子） -->
-    <div class="art-board w-full max-w-lg mx-auto py-1 px-4 rounded-xl shadow-sm flex items-center justify-center gap-2 mb-2 flex-shrink-0">
-      <span class="text-base">📺</span>
-      <span class="tracking-[0.25em] font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 text-xs sm:text-sm">
+    <!-- 講台看板：螢幕／白板（高度與字體加倍放大） -->
+    <div class="art-board w-full max-w-2xl mx-auto py-2.5 px-6 rounded-2xl shadow-md flex items-center justify-center gap-3 mb-2.5 flex-shrink-0">
+      <span class="text-xl sm:text-2xl">📺</span>
+      <span class="tracking-[0.3em] font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 text-base sm:text-lg md:text-xl">
         螢 幕 ／ 白 板
       </span>
-      <span class="text-[10px] font-bold px-2 py-0.2 rounded-full bg-white/80 border border-purple-200/80 text-purple-700 shadow-sm">
+      <span class="text-xs sm:text-sm font-black px-3 py-0.5 rounded-full bg-white/90 border border-purple-200/90 text-purple-700 shadow-sm">
         講台方向 🏛️
       </span>
     </div>
@@ -439,7 +439,19 @@
     <span id="toastMsg">已完成操作</span>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // 雲端配置（若無環境變數，則切換為本地安全模式）
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'art-classroom-seating-default';
+    let db = null;
+    let auth = null;
+    let isCloudReady = false;
+
+    const LOCAL_STORAGE_KEY = 'art_classroom_seating_v1';
+
     const DEFAULT_DATA = {
       password: "art123",
       classes: {
@@ -470,32 +482,106 @@
       classHistoryLogs: []
     };
 
-    let store = loadFromStorage();
-    let isTeacherLoggedIn = false;
-    let isAttendanceMode = false;
+    // 先嘗試從本地 Storage 載入以保證離線與 GitHub Pages 運作
+    try {
+      const localCached = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (localCached) {
+        window.store = { ...DEFAULT_DATA, ...JSON.parse(localCached) };
+      } else {
+        window.store = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      }
+    } catch (e) {
+      window.store = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    }
 
-    function loadFromStorage() {
+    window.isTeacherLoggedIn = false;
+    window.isAttendanceMode = false;
+
+    // 初始化雲端資料庫
+    async function initCloudDatabase() {
       try {
-        const saved = localStorage.getItem('art_room_seating_data');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          return { ...DEFAULT_DATA, ...parsed };
+        if (typeof __firebase_config !== 'undefined') {
+          const firebaseConfig = JSON.parse(__firebase_config);
+          const app = initializeApp(firebaseConfig);
+          auth = getAuth(app);
+          db = getFirestore(app);
+
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+
+          const user = auth.currentUser;
+          if (user) {
+            isCloudReady = true;
+            // 監聽雲端資料變化（路徑段數需為偶數：artifacts/{appId}/public/data 共 4 段）
+            const sharedDocRef = doc(db, 'artifacts', appId, 'public', 'data');
+            
+            // 讀取初始資料
+            const snap = await getDoc(sharedDocRef);
+            if (snap.exists()) {
+              window.store = { ...DEFAULT_DATA, ...snap.data() };
+              try {
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.store));
+              } catch (e) {}
+            } else {
+              await setDoc(sharedDocRef, window.store);
+            }
+
+            // 監聽雲端即時變化
+            onSnapshot(sharedDocRef, (docSnap) => {
+              if (docSnap.exists()) {
+                const cloudData = docSnap.data();
+                window.store = { ...window.store, ...cloudData };
+                try {
+                  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.store));
+                } catch (e) {}
+                populateClassSelects();
+                renderClassroom();
+              }
+            }, (error) => {
+              console.warn("雲端同步監聽錯誤:", error);
+            });
+
+            showToast("雲端同步已連線 ☁️", "✨");
+          }
         }
-      } catch (e) {
-        console.error("載入資料失敗:", e);
+      } catch (err) {
+        console.warn("未配置雲端金鑰或處於本地環境，已啟用安全單機模式", err);
       }
-      return JSON.parse(JSON.stringify(DEFAULT_DATA));
+
+      // 載入介面
+      populateClassSelects();
+      const curClass = getCurrentClass();
+      if (!window.store.seatAssignments[curClass]) {
+        shuffleSeatsWithAnimation();
+      } else {
+        renderClassroom();
+      }
     }
 
-    function saveToStorage() {
+    // 儲存資料（同時儲存至雲端與本地 localStorage）
+    window.saveToStorage = async function() {
+      // 1. 本地 localStorage 即時儲存（支援 GitHub Pages 與離線）
       try {
-        localStorage.setItem('art_room_seating_data', JSON.stringify(store));
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.store));
       } catch (e) {
-        console.error("儲存資料失敗:", e);
+        console.warn("本地儲存失敗:", e);
       }
-    }
 
-    function parseStudent(str) {
+      // 2. 雲端同步儲存（路徑使用 4 段偶數：artifacts/{appId}/public/data）
+      if (isCloudReady && db && auth && auth.currentUser) {
+        try {
+          const sharedDocRef = doc(db, 'artifacts', appId, 'public', 'data');
+          await setDoc(sharedDocRef, window.store);
+        } catch (e) {
+          console.error("雲端儲存失敗:", e);
+        }
+      }
+    };
+
+    window.parseStudent = function(str) {
       if (!str) return { seatNum: "", name: "" };
       const trimmed = str.trim();
       const match = trimmed.match(/^(\d+)[號\.\s、\-]+(.*)$/);
@@ -509,47 +595,47 @@
         return { seatNum: `${pureNumMatch[1].padStart(2, '0')}號`, name: trimmed };
       }
       return { seatNum: "", name: trimmed };
-    }
+    };
 
-    function getStudentScore(className, studentStr) {
-      if (!store.studentScores[className]) store.studentScores[className] = {};
-      return store.studentScores[className][studentStr] || 0;
-    }
+    window.getStudentScore = function(className, studentStr) {
+      if (!window.store.studentScores[className]) window.store.studentScores[className] = {};
+      return window.store.studentScores[className][studentStr] || 0;
+    };
 
-    function changeStudentScore(className, studentStr, delta, event) {
+    window.changeStudentScore = function(className, studentStr, delta, event) {
       if (event) event.stopPropagation();
-      if (!store.studentScores[className]) store.studentScores[className] = {};
-      const current = store.studentScores[className][studentStr] || 0;
+      if (!window.store.studentScores[className]) window.store.studentScores[className] = {};
+      const current = window.store.studentScores[className][studentStr] || 0;
       const updated = Math.max(-99, Math.min(999, current + delta));
-      store.studentScores[className][studentStr] = updated;
-      saveToStorage();
+      window.store.studentScores[className][studentStr] = updated;
+      window.saveToStorage();
 
       renderClassroom();
       const parsed = parseStudent(studentStr);
       showToast(`${parsed.name} ${delta > 0 ? '+1' : '-1'} ⭐（目前 ${updated}）`, delta > 0 ? "⭐" : "📉");
-    }
+    };
 
-    function changeDeskGroupScore(tableNum, delta, event) {
+    window.changeDeskGroupScore = function(tableNum, delta, event) {
       if (event) event.stopPropagation();
       const curClass = getCurrentClass();
-      const seats = store.seatAssignments[curClass] || [];
-      const absentList = store.absentStudents[curClass] || [];
+      const seats = window.store.seatAssignments[curClass] || [];
+      const absentList = window.store.absentStudents[curClass] || [];
 
       const startIdx = (tableNum - 1) * 6;
       let impacted = 0;
 
-      if (!store.studentScores[curClass]) store.studentScores[curClass] = {};
+      if (!window.store.studentScores[curClass]) window.store.studentScores[curClass] = {};
 
       for (let i = 0; i < 6; i++) {
         const studentStr = seats[startIdx + i];
         if (studentStr && studentStr.trim() !== '' && !absentList.includes(studentStr)) {
-          const cur = store.studentScores[curClass][studentStr] || 0;
-          store.studentScores[curClass][studentStr] = Math.max(-99, Math.min(999, cur + delta));
+          const cur = window.store.studentScores[curClass][studentStr] || 0;
+          window.store.studentScores[curClass][studentStr] = Math.max(-99, Math.min(999, cur + delta));
           impacted++;
         }
       }
 
-      saveToStorage();
+      window.saveToStorage();
       renderClassroom();
 
       const deskEl = document.getElementById(`desk-wood-${tableNum}`);
@@ -560,10 +646,9 @@
       }
 
       showToast(`第 ${tableNum} 桌全體同學 ${delta > 0 ? '+1' : '-1'} ⭐（共 ${impacted} 人）`, delta > 0 ? "✨" : "📉");
-    }
+    };
 
-    // 建立座位元件：嚴格維持 h-full flex-1 彈性自適應高度
-    function createSeatElement(globalIdx, studentStr, isAbsent, currentClass) {
+    window.createSeatElement = function(globalIdx, studentStr, isAbsent, currentClass) {
       const seat = document.createElement('div');
       const isEmpty = !studentStr || studentStr.trim() === '';
 
@@ -595,7 +680,7 @@
         : "bg-white/20 text-white font-bold border border-white/25";
 
       let scoreControlHtml = '';
-      if (isTeacherLoggedIn) {
+      if (window.isTeacherLoggedIn) {
         scoreControlHtml = `
           <div class="flex items-center gap-1 leading-none" onclick="event.stopPropagation()">
             <button onclick="changeStudentScore('${currentClass}', '${studentStr.replace(/'/g, "\\'")}', -1, event)" class="w-5 h-5 rounded-full bg-black/35 hover:bg-black/55 text-white text-xs flex items-center justify-center leading-none active:scale-90 transition font-black border border-white/25">－</button>
@@ -627,29 +712,27 @@
 
       seat.onclick = () => handleSeatClick(studentStr);
       return seat;
-    }
+    };
 
-    // 渲染 8 桌：確保高度比例等比瓜分
-    function renderClassroom() {
+    window.renderClassroom = function() {
       const curClass = getCurrentClass();
       const grid = document.getElementById('classroomGrid');
       grid.innerHTML = '';
 
       if (!curClass) return;
 
-      const seats = store.seatAssignments[curClass] || [];
-      const absentList = store.absentStudents[curClass] || [];
+      const seats = window.store.seatAssignments[curClass] || [];
+      const absentList = window.store.absentStudents[curClass] || [];
 
       for (let t = 1; t <= 8; t++) {
         const tableCard = document.createElement('div');
         tableCard.id = `table-group-${t}`;
-        // h-full 撐滿網格配額高度
         tableCard.className = 'bg-white/85 backdrop-blur-md border border-white/90 rounded-2xl p-1.5 shadow-sm hover:shadow-md transition flex flex-col h-full min-h-0 box-border';
 
         const rowContainer = document.createElement('div');
         rowContainer.className = 'grid grid-cols-5 gap-1.5 items-stretch h-full w-full min-h-0';
 
-        // 左邊 3 個座位 (1, 2, 3) 垂直均分 100%
+        // 左側 3 席
         const leftCol = document.createElement('div');
         leftCol.className = 'col-span-2 flex flex-col gap-1.5 h-full min-h-0 justify-between';
         for (let i = 1; i <= 3; i++) {
@@ -659,13 +742,13 @@
           leftCol.appendChild(createSeatElement(globalIdx, studentStr, isAbsent, curClass));
         }
 
-        // 中央 夢幻蜜糖奶油黃大畫桌 (滿高彈性延展)
+        // 中央大桌
         const deskWood = document.createElement('div');
         deskWood.id = `desk-wood-${t}`;
         deskWood.className = 'dream-desk col-span-1 h-full min-h-0 rounded-xl flex flex-col items-center justify-between py-2 text-amber-900 shadow-sm box-border';
         
         let deskControlsHtml = '';
-        if (isTeacherLoggedIn) {
+        if (window.isTeacherLoggedIn) {
           deskControlsHtml = `
             <div class="flex items-center gap-1 bg-white/95 backdrop-blur-sm p-0.5 rounded-xl shadow-sm border border-amber-200 mt-1 flex-shrink-0" onclick="event.stopPropagation()">
               <button onclick="changeDeskGroupScore(${t}, -1, event)" title="本桌全員 -1 星" class="w-4 h-4 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-black text-xs flex items-center justify-center leading-none active:scale-90 transition">－</button>
@@ -686,7 +769,7 @@
           ${deskControlsHtml}
         `;
 
-        // 右邊 3 個座位 (4, 5, 6) 垂直均分 100%
+        // 右側 3 席
         const rightCol = document.createElement('div');
         rightCol.className = 'col-span-2 flex flex-col gap-1.5 h-full min-h-0 justify-between';
         for (let i = 4; i <= 6; i++) {
@@ -704,19 +787,18 @@
       }
 
       updateAbsentTag();
-    }
+    };
 
-    function shuffleSeatsWithAnimation() {
+    window.shuffleSeatsWithAnimation = function() {
       const curClass = getCurrentClass();
       if (!curClass) return;
 
-      const students = [...(store.classes[curClass] || [])];
+      const students = [...(window.store.classes[curClass] || [])];
       if (students.length === 0) {
         showToast("目前班級名單為空，請先至「管理名單」新增學生！", "⚠️");
         return;
       }
 
-      // Fisher-Yates 洗牌
       for (let i = students.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [students[i], students[j]] = [students[j], students[i]];
@@ -758,8 +840,8 @@
         }
       }
 
-      store.seatAssignments[curClass] = finalSeats;
-      saveToStorage();
+      window.store.seatAssignments[curClass] = finalSeats;
+      window.saveToStorage();
 
       const grid = document.getElementById('classroomGrid');
       grid.classList.remove('animate-shuffle');
@@ -767,10 +849,10 @@
       grid.classList.add('animate-shuffle');
 
       renderClassroom();
-      showToast(`已隨機分配座位！8張夢幻畫桌均已安排就座 🎲`, "✨");
-    }
+      showToast(`已隨機分配座位！8張畫桌均已安排就座 🎲`, "✨");
+    };
 
-    function startDutyRaffle() {
+    window.startDutyRaffle = function() {
       const curClass = getCurrentClass();
       if (!curClass) return;
 
@@ -805,9 +887,9 @@
             const winnerEl = document.getElementById(`desk-wood-${finalWinner}`);
             if (winnerEl) winnerEl.classList.add('table-winner');
             
-            if (!store.lastDutyTable) store.lastDutyTable = {};
-            store.lastDutyTable[curClass] = finalWinner;
-            saveToStorage();
+            if (!window.store.lastDutyTable) window.store.lastDutyTable = {};
+            window.store.lastDutyTable[curClass] = finalWinner;
+            window.saveToStorage();
 
             showDutyModal(finalWinner);
             btn.disabled = false;
@@ -817,12 +899,12 @@
       }
 
       step();
-    }
+    };
 
-    function showDutyModal(tableNum) {
+    window.showDutyModal = function(tableNum) {
       const curClass = getCurrentClass();
-      const seats = store.seatAssignments[curClass] || [];
-      const absentList = store.absentStudents[curClass] || [];
+      const seats = window.store.seatAssignments[curClass] || [];
+      const absentList = window.store.absentStudents[curClass] || [];
 
       document.getElementById('dutyModalTitle').innerText = `第 ${tableNum} 桌 值日生`;
 
@@ -861,20 +943,20 @@
 
       document.getElementById('dutyModal').classList.remove('hidden');
       document.getElementById('dutyModal').classList.add('flex');
-    }
+    };
 
-    function closeDutyModal() {
+    window.closeDutyModal = function() {
       document.getElementById('dutyModal').classList.add('hidden');
       document.getElementById('dutyModal').classList.remove('flex');
       document.querySelectorAll('[id^="desk-wood-"]').forEach(el => el.classList.remove('table-winner'));
-    }
+    };
 
-    function toggleAttendanceMode() {
-      isAttendanceMode = !isAttendanceMode;
+    window.toggleAttendanceMode = function() {
+      window.isAttendanceMode = !window.isAttendanceMode;
       const btn = document.getElementById('btnAttendanceToggle');
       const text = document.getElementById('attendanceBtnText');
 
-      if (isAttendanceMode) {
+      if (window.isAttendanceMode) {
         document.body.classList.add('attendance-mode-active');
         btn.classList.remove('bg-purple-50', 'text-purple-700');
         btn.classList.add('bg-rose-500', 'text-white', 'animate-pulse');
@@ -887,15 +969,15 @@
         text.innerText = '點名缺席';
         showToast("已退出點名模式", "✨");
       }
-    }
+    };
 
-    function handleSeatClick(studentStr) {
-      if (!isAttendanceMode || !isTeacherLoggedIn) return;
+    window.handleSeatClick = function(studentStr) {
+      if (!window.isAttendanceMode || !window.isTeacherLoggedIn) return;
       const curClass = getCurrentClass();
       if (!curClass || !studentStr) return;
 
-      if (!store.absentStudents[curClass]) store.absentStudents[curClass] = [];
-      const list = store.absentStudents[curClass];
+      if (!window.store.absentStudents[curClass]) window.store.absentStudents[curClass] = [];
+      const list = window.store.absentStudents[curClass];
       const idx = list.indexOf(studentStr);
 
       const parsed = parseStudent(studentStr);
@@ -907,27 +989,27 @@
         showToast(`${parsed.name} 已標記為缺席`, "📋");
       }
 
-      saveToStorage();
+      window.saveToStorage();
       renderClassroom();
-    }
+    };
 
-    function updateAbsentTag() {
+    window.updateAbsentTag = function() {
       const curClass = getCurrentClass();
-      const absentList = store.absentStudents[curClass] || [];
+      const absentList = window.store.absentStudents[curClass] || [];
       const tag = document.getElementById('absentSummaryTag');
       const text = document.getElementById('absentListText');
 
       if (absentList.length === 0) {
-        tag.className = 'flex items-center gap-1.5 text-xs font-bold px-2.5 py-0.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm';
+        tag.className = 'flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm';
         text.innerText = '全員到齊 ✨';
       } else {
-        tag.className = 'flex items-center gap-1.5 text-xs font-bold px-2.5 py-0.5 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 shadow-sm';
+        tag.className = 'flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 shadow-sm';
         const formatted = absentList.map(s => parseStudent(s).name).join('、');
         text.innerText = `(${absentList.length}人) ${formatted}`;
       }
-    }
+    };
 
-    function saveTodayClassLog() {
+    window.saveTodayClassLog = function() {
       const curClass = getCurrentClass();
       if (!curClass) return;
 
@@ -935,13 +1017,13 @@
       const dateStr = now.toISOString().split('T')[0];
       const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
       
-      const totalCount = (store.classes[curClass] || []).length;
-      const absentList = [...(store.absentStudents[curClass] || [])];
+      const totalCount = (window.store.classes[curClass] || []).length;
+      const absentList = [...(window.store.absentStudents[curClass] || [])];
       const presentCount = Math.max(0, totalCount - absentList.length);
-      const scores = { ...(store.studentScores[curClass] || {}) };
-      const dutyTable = (store.lastDutyTable && store.lastDutyTable[curClass]) ? store.lastDutyTable[curClass] : null;
+      const scores = { ...(window.store.studentScores[curClass] || {}) };
+      const dutyTable = (window.store.lastDutyTable && window.store.lastDutyTable[curClass]) ? window.store.lastDutyTable[curClass] : null;
 
-      if (!store.classHistoryLogs) store.classHistoryLogs = [];
+      if (!window.store.classHistoryLogs) window.store.classHistoryLogs = [];
       
       const logEntry = {
         id: 'log_' + Date.now(),
@@ -953,44 +1035,44 @@
         absentStudents: absentList,
         scores: scores,
         dutyTable: dutyTable,
-        seatSnapshot: [...(store.seatAssignments[curClass] || [])]
+        seatSnapshot: [...(window.store.seatAssignments[curClass] || [])]
       };
 
-      store.classHistoryLogs.unshift(logEntry);
-      saveToStorage();
+      window.store.classHistoryLogs.unshift(logEntry);
+      window.saveToStorage();
 
       showToast(`已成功封存 ${curClass} 今日（${dateStr}）的課堂日誌！`, "💾");
-    }
+    };
 
-    function openHistoryModal() {
-      if (!store.classHistoryLogs) store.classHistoryLogs = [];
+    window.openHistoryModal = function() {
+      if (!window.store.classHistoryLogs) window.store.classHistoryLogs = [];
       const filterSelect = document.getElementById('historyFilterClass');
       filterSelect.innerHTML = '<option value="ALL">全部班級</option>';
-      Object.keys(store.classes).forEach(cls => {
+      Object.keys(window.store.classes).forEach(cls => {
         filterSelect.add(new Option(cls, cls));
       });
 
       renderHistoryTable();
       document.getElementById('historyModal').classList.remove('hidden');
       document.getElementById('historyModal').classList.add('flex');
-    }
+    };
 
-    function closeHistoryModal() {
+    window.closeHistoryModal = function() {
       document.getElementById('historyModal').classList.add('hidden');
       document.getElementById('historyModal').classList.remove('flex');
-    }
+    };
 
-    function clearHistoryFilters() {
+    window.clearHistoryFilters = function() {
       document.getElementById('historyFilterClass').value = 'ALL';
       document.getElementById('historyFilterDate').value = '';
       renderHistoryTable();
-    }
+    };
 
-    function renderHistoryTable() {
+    window.renderHistoryTable = function() {
       const tableBody = document.getElementById('historyTableBody');
       tableBody.innerHTML = '';
 
-      const logs = store.classHistoryLogs || [];
+      const logs = window.store.classHistoryLogs || [];
       const filterClass = document.getElementById('historyFilterClass').value;
       const filterDate = document.getElementById('historyFilterDate').value;
 
@@ -1063,10 +1145,10 @@
 
         tableBody.appendChild(row);
       });
-    }
+    };
 
-    function viewLogDetail(logId) {
-      const log = (store.classHistoryLogs || []).find(l => l.id === logId);
+    window.viewLogDetail = function(logId) {
+      const log = (window.store.classHistoryLogs || []).find(l => l.id === logId);
       if (!log) return;
 
       document.getElementById('logDetailTitle').innerText = `課堂日誌：${log.className}（${log.date} ${log.time || ''}）`;
@@ -1109,22 +1191,22 @@
 
       document.getElementById('logDetailModal').classList.remove('hidden');
       document.getElementById('logDetailModal').classList.add('flex');
-    }
+    };
 
-    function closeLogDetailModal() {
+    window.closeLogDetailModal = function() {
       document.getElementById('logDetailModal').classList.add('hidden');
       document.getElementById('logDetailModal').classList.remove('flex');
-    }
+    };
 
-    function deleteHistoryLog(logId) {
-      store.classHistoryLogs = (store.classHistoryLogs || []).filter(l => l.id !== logId);
-      saveToStorage();
+    window.deleteHistoryLog = function(logId) {
+      window.store.classHistoryLogs = (window.store.classHistoryLogs || []).filter(l => l.id !== logId);
+      window.saveToStorage();
       renderHistoryTable();
       showToast("已刪除該筆課堂日誌紀錄", "🗑️");
-    }
+    };
 
-    function exportHistoryToCSV() {
-      const logs = store.classHistoryLogs || [];
+    window.exportHistoryToCSV = function() {
+      const logs = window.store.classHistoryLogs || [];
       if (logs.length === 0) {
         showToast("目前尚無歷史紀錄可供匯出！", "⚠️");
         return;
@@ -1149,10 +1231,10 @@
       a.click();
       URL.revokeObjectURL(url);
       showToast("已成功匯出課堂紀錄為 Excel (CSV) 檔！", "📊");
-    }
+    };
 
-    function exportFullDatabaseJSON() {
-      const dataStr = JSON.stringify(store, null, 2);
+    window.exportFullDatabaseJSON = function() {
+      const dataStr = JSON.stringify(window.store, null, 2);
       const blob = new Blob([dataStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1161,9 +1243,9 @@
       a.click();
       URL.revokeObjectURL(url);
       showToast("資料庫完整備份檔已下載！可存隨身碟或家裡電腦", "💾");
-    }
+    };
 
-    function importFullDatabaseJSON(event) {
+    window.importFullDatabaseJSON = function(event) {
       const file = event.target.files[0];
       if (!file) return;
 
@@ -1172,8 +1254,8 @@
         try {
           const parsed = JSON.parse(e.target.result);
           if (parsed && parsed.classes) {
-            store = { ...DEFAULT_DATA, ...parsed };
-            saveToStorage();
+            window.store = { ...DEFAULT_DATA, ...parsed };
+            window.saveToStorage();
             populateClassSelects();
             handleClassChange();
             closeClassModal();
@@ -1187,12 +1269,12 @@
       };
       reader.readAsText(file);
       event.target.value = '';
-    }
+    };
 
-    function toggleAuthModal() {
-      if (isTeacherLoggedIn) {
-        isTeacherLoggedIn = false;
-        if (isAttendanceMode) toggleAttendanceMode();
+    window.toggleAuthModal = function() {
+      if (window.isTeacherLoggedIn) {
+        window.isTeacherLoggedIn = false;
+        if (window.isAttendanceMode) toggleAttendanceMode();
         updateAuthUI();
         showToast("已登出教師模式，恢復學生檢視", "🔒");
       } else {
@@ -1202,62 +1284,63 @@
         document.getElementById('loginModal').classList.add('flex');
         setTimeout(() => document.getElementById('passwordInput').focus(), 50);
       }
-    }
+    };
 
-    function closeLoginModal() {
+    window.closeLoginModal = function() {
       document.getElementById('loginModal').classList.add('hidden');
       document.getElementById('loginModal').classList.remove('flex');
-    }
+    };
 
-    function submitLogin() {
+    window.submitLogin = function() {
       const input = document.getElementById('passwordInput').value;
-      if (input === store.password) {
-        isTeacherLoggedIn = true;
+      if (input === window.store.password) {
+        window.isTeacherLoggedIn = true;
         closeLoginModal();
         updateAuthUI();
         showToast("教師登入成功！已解鎖排位、加分與名單管理", "✨");
       } else {
         document.getElementById('loginErrorMsg').classList.remove('hidden');
       }
-    }
+    };
 
     document.getElementById('passwordInput').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') submitLogin();
     });
 
-    function updateAuthUI() {
+    window.updateAuthUI = function() {
       const actions = document.getElementById('teacherActionGroup');
       const statusBadge = document.getElementById('teacherStatusBadge');
       const authBtnText = document.getElementById('authBtnText');
       const authBtn = document.getElementById('authBtn');
 
-      if (isTeacherLoggedIn) {
+      if (window.isTeacherLoggedIn) {
         actions.classList.remove('hidden');
         actions.classList.add('flex');
-        statusBadge.className = 'text-xs font-bold px-2 py-0.5 rounded-xl bg-purple-100 text-purple-700 border border-purple-200 shadow-sm';
+        statusBadge.className = 'text-xs sm:text-sm font-bold px-2.5 py-1 rounded-xl bg-purple-100 text-purple-700 border border-purple-200 shadow-sm';
         statusBadge.innerText = '🌸 教師模式';
         authBtnText.innerText = '教師登出';
-        authBtn.className = 'bg-gradient-to-r from-rose-500 to-pink-600 hover:brightness-105 text-white text-xs font-black px-3 py-1 rounded-xl shadow-sm flex items-center gap-1 transition active:scale-95';
+        authBtn.className = 'bg-gradient-to-r from-rose-500 to-pink-600 hover:brightness-105 text-white text-xs sm:text-sm font-black px-4 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5 transition active:scale-95';
       } else {
         actions.classList.add('hidden');
         actions.classList.remove('flex');
-        statusBadge.className = 'text-xs font-bold px-2 py-0.5 rounded-xl bg-slate-100 text-slate-500 border border-slate-200';
+        statusBadge.className = 'text-xs sm:text-sm font-bold px-2.5 py-1 rounded-xl bg-slate-100 text-slate-500 border border-slate-200';
         statusBadge.innerText = '學生檢視';
         authBtnText.innerText = '教師登入';
-        authBtn.className = 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:brightness-105 text-white text-xs font-black px-3 py-1 rounded-xl shadow-sm flex items-center gap-1 transition active:scale-95';
+        authBtn.className = 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:brightness-105 text-white text-xs sm:text-sm font-black px-4 py-1.5 rounded-xl shadow-md flex items-center gap-1.5 transition active:scale-95';
       }
       renderClassroom();
-    }
+    };
 
-    function getCurrentClass() {
+    window.getCurrentClass = function() {
       return document.getElementById('classSelect').value;
-    }
+    };
 
-    function populateClassSelects() {
+    window.populateClassSelects = function() {
       const mainSelect = document.getElementById('classSelect');
       const modalSelect = document.getElementById('modalClassSelect');
-      const classes = Object.keys(store.classes);
+      const classes = Object.keys(window.store.classes);
 
+      const currentVal = mainSelect.value;
       mainSelect.innerHTML = '';
       modalSelect.innerHTML = '';
 
@@ -1266,54 +1349,58 @@
         modalSelect.add(new Option(cls, cls));
       });
 
+      if (classes.includes(currentVal)) {
+        mainSelect.value = currentVal;
+      }
+
       if (classes.length > 0) {
         updateClassCountBadge();
       }
-    }
+    };
 
-    function handleClassChange() {
+    window.handleClassChange = function() {
       updateClassCountBadge();
       const curClass = getCurrentClass();
-      if (!store.seatAssignments[curClass]) {
+      if (!window.store.seatAssignments[curClass]) {
         shuffleSeatsWithAnimation();
       } else {
         renderClassroom();
       }
-    }
+    };
 
-    function updateClassCountBadge() {
+    window.updateClassCountBadge = function() {
       const curClass = getCurrentClass();
-      const count = (store.classes[curClass] || []).length;
+      const count = (window.store.classes[curClass] || []).length;
       document.getElementById('classCountBadge').innerText = `${count} 人`;
-    }
+    };
 
-    function openClassModal() {
+    window.openClassModal = function() {
       populateClassSelects();
       const curClass = getCurrentClass();
       document.getElementById('modalClassSelect').value = curClass;
       handleModalClassChange();
       document.getElementById('classModal').classList.remove('hidden');
       document.getElementById('classModal').classList.add('flex');
-    }
+    };
 
-    function closeClassModal() {
+    window.closeClassModal = function() {
       document.getElementById('classModal').classList.add('hidden');
       document.getElementById('classModal').classList.remove('flex');
-    }
+    };
 
-    function handleModalClassChange() {
+    window.handleModalClassChange = function() {
       const cls = document.getElementById('modalClassSelect').value;
-      const list = store.classes[cls] || [];
+      const list = window.store.classes[cls] || [];
       document.getElementById('modalStudentTextarea').value = list.join('\n');
       document.getElementById('modalListCount').innerText = `共 ${list.length} 人`;
-    }
+    };
 
     document.getElementById('modalStudentTextarea').addEventListener('input', (e) => {
       const lines = e.target.value.split('\n').filter(s => s.trim() !== '');
       document.getElementById('modalListCount').innerText = `共 ${lines.length} 人`;
     });
 
-    function saveStudentList() {
+    window.saveStudentList = function() {
       const cls = document.getElementById('modalClassSelect').value;
       if (!cls) return;
 
@@ -1322,8 +1409,8 @@
         .map(s => s.trim())
         .filter(s => s !== '');
 
-      store.classes[cls] = lines;
-      saveToStorage();
+      window.store.classes[cls] = lines;
+      window.saveToStorage();
       populateClassSelects();
       document.getElementById('classSelect').value = cls;
       updateClassCountBadge();
@@ -1331,80 +1418,80 @@
 
       shuffleSeatsWithAnimation();
       showToast(`已成功儲存 ${cls} 的名單並重新排位！`, "✨");
-    }
+    };
 
-    function openAddClassPrompt() {
+    window.openAddClassPrompt = function() {
       document.getElementById('newClassNameInput').value = '';
       document.getElementById('addClassModal').classList.remove('hidden');
       document.getElementById('addClassModal').classList.add('flex');
       setTimeout(() => document.getElementById('newClassNameInput').focus(), 50);
-    }
+    };
 
-    function closeAddClassModal() {
+    window.closeAddClassModal = function() {
       document.getElementById('addClassModal').classList.add('hidden');
       document.getElementById('addClassModal').classList.remove('flex');
-    }
+    };
 
-    function confirmAddClass() {
+    window.confirmAddClass = function() {
       const name = document.getElementById('newClassNameInput').value.trim();
       if (!name) {
         showToast("請輸入班級名稱！", "⚠️");
         return;
       }
-      if (store.classes[name]) {
+      if (window.store.classes[name]) {
         showToast("此班級名稱已存在！", "⚠️");
         return;
       }
-      store.classes[name] = [];
-      saveToStorage();
+      window.store.classes[name] = [];
+      window.saveToStorage();
       closeAddClassModal();
       populateClassSelects();
       document.getElementById('modalClassSelect').value = name;
       handleModalClassChange();
       showToast(`已新增班級：${name}，可開始貼入學生名單`, "🌸");
-    }
+    };
 
-    function deleteCurrentClass() {
+    window.deleteCurrentClass = function() {
       const cls = document.getElementById('modalClassSelect').value;
-      const classKeys = Object.keys(store.classes);
+      const classKeys = Object.keys(window.store.classes);
       if (classKeys.length <= 1) {
         showToast("系統中至少需保留一個班級！", "⚠️");
         return;
       }
-      delete store.classes[cls];
-      delete store.seatAssignments[cls];
-      delete store.absentStudents[cls];
-      delete store.studentScores[cls];
-      saveToStorage();
+      delete window.store.classes[cls];
+      delete window.store.seatAssignments[cls];
+      delete window.store.absentStudents[cls];
+      delete window.store.studentScores[cls];
+      window.saveToStorage();
 
       populateClassSelects();
       handleModalClassChange();
       renderClassroom();
       showToast(`已刪除班級：${cls}`, "🗑️");
-    }
+    };
 
-    function resetClassScores() {
+    window.resetClassScores = function() {
       const cls = document.getElementById('modalClassSelect').value;
       if (!cls) return;
-      store.studentScores[cls] = {};
-      saveToStorage();
+      window.store.studentScores[cls] = {};
+      window.saveToStorage();
       renderClassroom();
       showToast(`已將 ${cls} 全班所有學生的星星積分歸零！`, "⭐");
-    }
+    };
 
-    function updatePassword() {
+    window.updatePassword = function() {
       const newPass = document.getElementById('newPasswordInput').value.trim();
       if (!newPass) {
         showToast("請輸入有效的新密碼", "⚠️");
         return;
       }
-      store.password = newPass;
-      saveToStorage();
+      window.store.password = newPass;
+      window.saveToStorage();
       document.getElementById('newPasswordInput').value = '';
-      showToast("教師登入密碼更新成功！", "🔑");
-    }
+      showToast("教師登入密碼更新成功！已同步至雲端", "🔑");
+    };
 
-    function showToast(msg, icon = "✨") {
+    window.showToast = function(msg, icon = "✨") {
       const toast = document.getElementById('toast');
       document.getElementById('toastMsg').innerText = msg;
       document.getElementById('toastIcon').innerText = icon;
@@ -1415,16 +1502,10 @@
         toast.classList.remove('opacity-100');
         toast.classList.add('opacity-0', 'pointer-events-none');
       }, 3000);
-    }
+    };
 
     window.addEventListener('DOMContentLoaded', () => {
-      populateClassSelects();
-      const curClass = getCurrentClass();
-      if (!store.seatAssignments[curClass]) {
-        shuffleSeatsWithAnimation();
-      } else {
-        renderClassroom();
-      }
+      initCloudDatabase();
     });
   </script>
 </body>
