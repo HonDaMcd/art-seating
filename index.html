@@ -482,11 +482,16 @@
     import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     /* ==========================================================================
-       【跨電腦雲端同步設定】
-       如果您在 Google Firebase 申請了免費專案，可將專案中的 firebaseConfig 
-       貼到下方的 USER_FIREBASE_CONFIG 中，或直接在網頁點擊 [本地模式] 貼入即可！
+       【跨電腦雲端同步設定】已內建專屬 Firebase 專案設定
        ========================================================================== */
-    const USER_FIREBASE_CONFIG = null;
+    const USER_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDRnlkM2sQNSnT_4kHR4wuyEeNKohP6tKI",
+      authDomain: "art-seating.firebaseapp.com",
+      projectId: "art-seating",
+      storageBucket: "art-seating.firebasestorage.app",
+      messagingSenderId: "705959223597",
+      appId: "1:705959223597:web:4f3199b6297597c8d173a4"
+    };
 
     let db = null;
     let auth = null;
