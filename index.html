@@ -483,8 +483,8 @@
 
     /* ==========================================================================
        【跨電腦雲端同步設定】
-       如果您在 Google Firebase 申請了免費專案，請將專案中的 firebaseConfig 
-       貼到下方的 USER_FIREBASE_CONFIG 中。上傳到 GitHub 後，所有電腦開啟網站即自動即時同步！
+       如果您在 Google Firebase 申請了免費專案，可將專案中的 firebaseConfig 
+       貼到下方的 USER_FIREBASE_CONFIG 中，或直接在網頁點擊 [本地模式] 貼入即可！
        ========================================================================== */
     const firebaseConfig = {
   apiKey: "AIzaSyDRnlkM2sQNSnT_4kHR4wuyEeNKohP6tKI",
@@ -495,7 +495,6 @@
   appId: "1:705959223597:web:4f3199b6297597c8d173a4"
 };
 
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'art-classroom-seating-default';
     let db = null;
     let auth = null;
     let isCloudReady = false;
@@ -548,50 +547,90 @@
     window.isTeacherLoggedIn = false;
     window.isAttendanceMode = false;
 
+    // 智慧解析器：無論使用者貼上 JS 代碼、HTML script 還是純 JSON，均能自動抽取 Config
+    function parseFirebaseInput(rawText) {
+      if (!rawText || typeof rawText !== 'string') return null;
+      
+      // 1. 嘗試直接 JSON.parse
+      try {
+        const obj = JSON.parse(rawText.trim());
+        if (obj && (obj.apiKey || obj.projectId)) return obj;
+      } catch (e) {}
+
+      // 2. 正則表達式萬能抽取
+      const extractField = (fieldName) => {
+        const pattern = new RegExp(`['"]?${fieldName}['"]?\\s*:\\s*['"\`]?([^'",\`\\s\\n}]+)['"\`]?`, 'i');
+        const match = rawText.match(pattern);
+        return match ? match[1].trim() : null;
+      };
+
+      const apiKey = extractField('apiKey');
+      const projectId = extractField('projectId');
+      const authDomain = extractField('authDomain');
+      const storageBucket = extractField('storageBucket');
+      const messagingSenderId = extractField('messagingSenderId');
+      const appId = extractField('appId');
+
+      if (apiKey && projectId) {
+        return {
+          apiKey,
+          projectId,
+          authDomain: authDomain || `${projectId}.firebaseapp.com`,
+          storageBucket: storageBucket || `${projectId}.firebasestorage.app`,
+          messagingSenderId: messagingSenderId || '',
+          appId: appId || ''
+        };
+      }
+      return null;
+    }
+
     // 初始化雲端資料庫
     async function initCloudDatabase() {
       let firebaseConfig = null;
 
-      // 讀取優先級：程式碼自訂 > 系統預設環境 > 瀏覽器自訂儲存
+      // 讀取優先級：程式碼自訂 > 瀏覽器快取自訂
       if (USER_FIREBASE_CONFIG && typeof USER_FIREBASE_CONFIG === 'object') {
         firebaseConfig = USER_FIREBASE_CONFIG;
-      } else if (typeof __firebase_config !== 'undefined') {
-        try { firebaseConfig = JSON.parse(__firebase_config); } catch (e) {}
       } else {
         const storedConfig = localStorage.getItem(FIREBASE_LOCAL_KEY);
         if (storedConfig) {
-          try { firebaseConfig = JSON.parse(storedConfig); } catch (e) {}
+          firebaseConfig = parseFirebaseInput(storedConfig);
         }
       }
 
-      if (firebaseConfig && firebaseConfig.apiKey) {
+      if (firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId) {
         try {
           const app = initializeApp(firebaseConfig);
           auth = getAuth(app);
           db = getFirestore(app);
 
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-          } else {
-            await signInAnonymously(auth);
+          // 嘗試匿名登入，若後台未開啟匿名登入則安全略過，直接連線 Firestore
+          try {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+              await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+              await signInAnonymously(auth);
+            }
+          } catch (authErr) {
+            console.warn("匿名登入略過（將使用開放規則連線 Firestore）:", authErr.message);
           }
 
-          const user = auth.currentUser;
-          if (user) {
-            isCloudReady = true;
-            updateCloudSyncStatusUI(true);
+          const sharedDocRef = doc(db, 'seating_system', 'main_state');
 
-            // 嚴格依循規範路徑：artifacts/{appId}/public/data/{collectionName}/{documentId}
-            const sharedDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'seating', 'main_state');
-
-            // 首次讀取
+          // 首次讀取或建立
+          try {
             const snap = await getDoc(sharedDocRef);
             if (snap.exists()) {
               window.store = { ...DEFAULT_DATA, ...snap.data() };
               try { localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.store)); } catch (e) {}
             } else {
-              await setDoc(sharedDocRef, window.store);
+              // 寫入初始化資料
+              const cleanData = JSON.parse(JSON.stringify(window.store));
+              await setDoc(sharedDocRef, cleanData);
             }
+
+            isCloudReady = true;
+            updateCloudSyncStatusUI(true);
 
             // 即時同步監聽
             onSnapshot(sharedDocRef, (docSnap) => {
@@ -603,15 +642,26 @@
                 renderClassroom();
               }
             }, (error) => {
-              console.warn("雲端同步監聽中斷:", error);
-              updateCloudSyncStatusUI(false);
+              console.warn("雲端監聽警示:", error);
+              if (error.code === 'permission-denied') {
+                showToast("⚠️ Firestore 規則拒絕連線！請至 Firebase 規則頁開放 allow read, write: if true;", "⚠️");
+              }
             });
 
-            showToast("雲端資料庫已連線！跨電腦即時同步已啟用 ☁️", "✨");
+            showToast("雲端資料庫已連線！跨電腦同步正常運作中 ☁️", "✨");
+          } catch (docErr) {
+            console.error("Firestore 資料存取錯誤:", docErr);
+            if (docErr.code === 'permission-denied') {
+              showToast("⚠️ 權限拒絕！請至 Firebase Firestore 將「規則」改為 allow read, write: if true;", "⚠️");
+            } else {
+              showToast("雲端連線失敗：" + docErr.message, "⚠️");
+            }
+            updateCloudSyncStatusUI(false);
           }
         } catch (err) {
-          console.warn("雲端連線失敗，已自動切換為本地安全模式:", err);
+          console.warn("Firebase 初始化失敗:", err);
           updateCloudSyncStatusUI(false);
+          showToast("Firebase 設定錯誤：" + err.message, "⚠️");
         }
       } else {
         updateCloudSyncStatusUI(false);
@@ -631,22 +681,32 @@
       const tag = document.getElementById('cloudSyncStatusTag');
       const icon = document.getElementById('cloudSyncIcon');
       const text = document.getElementById('cloudSyncText');
+      const diag = document.getElementById('diagnosticStatusText');
       if (!tag) return;
 
       if (isConnected) {
         tag.className = 'cursor-pointer flex items-center gap-1.5 text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 shadow-sm hover:bg-blue-100 transition';
         icon.innerText = '☁️';
         text.innerText = '雲端即時同步中';
+        if (diag) {
+          diag.className = 'text-emerald-600 font-black';
+          diag.innerText = '✅ 雲端已連線，資料即時同步中！';
+        }
       } else {
         tag.className = 'cursor-pointer flex items-center gap-1.5 text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-slate-100 text-slate-500 border border-slate-200 shadow-sm hover:bg-purple-50 hover:text-purple-700 transition';
         icon.innerText = '💻';
-        text.innerText = '本地儲存 (未連雲端)';
+        text.innerText = '本地模式 (未連雲端)';
+        if (diag) {
+          diag.className = 'text-slate-500 font-bold';
+          diag.innerText = '📡 目前狀態：尚未連線雲端 (使用本地儲存)';
+        }
       }
     }
 
     window.openCloudConfigModal = function() {
       const stored = localStorage.getItem(FIREBASE_LOCAL_KEY) || (USER_FIREBASE_CONFIG ? JSON.stringify(USER_FIREBASE_CONFIG, null, 2) : '');
       document.getElementById('firebaseConfigTextarea').value = stored;
+      updateCloudSyncStatusUI(isCloudReady);
       document.getElementById('cloudModal').classList.remove('hidden');
       document.getElementById('cloudModal').classList.add('flex');
     };
@@ -656,33 +716,56 @@
       document.getElementById('cloudModal').classList.remove('flex');
     };
 
+    window.clearCloudConfig = function() {
+      localStorage.removeItem(FIREBASE_LOCAL_KEY);
+      document.getElementById('firebaseConfigTextarea').value = '';
+      showToast("已清除自訂雲端設定，切換回本地模式", "💻");
+      closeCloudConfigModal();
+      setTimeout(() => location.reload(), 500);
+    };
+
     window.saveCustomFirebaseConfig = function() {
       const text = document.getElementById('firebaseConfigTextarea').value.trim();
       if (!text) {
-        localStorage.removeItem(FIREBASE_LOCAL_KEY);
-        showToast("已清除自訂雲端設定，已切換回本地模式", "💻");
-        closeCloudConfigModal();
-        location.reload();
+        clearCloudConfig();
         return;
       }
-      try {
-        const parsed = JSON.parse(text);
-        if (parsed.apiKey && parsed.projectId) {
-          localStorage.setItem(FIREBASE_LOCAL_KEY, JSON.stringify(parsed));
-          closeCloudConfigModal();
-          showToast("已儲存雲端設定！正在重新載入連線...", "☁️");
-          setTimeout(() => location.reload(), 800);
-        } else {
-          showToast("設定內容缺少 apiKey 或 projectId，請檢查格式", "⚠️");
-        }
-      } catch (e) {
-        showToast("格式錯誤，請確保輸入的是合法的 JSON 格式！", "⚠️");
+      
+      const parsed = parseFirebaseInput(text);
+      if (parsed && parsed.apiKey && parsed.projectId) {
+        localStorage.setItem(FIREBASE_LOCAL_KEY, JSON.stringify(parsed, null, 2));
+        closeCloudConfigModal();
+        showToast("已成功辨識 Firebase 設定！正在重新連線...", "☁️");
+        setTimeout(() => location.reload(), 600);
+      } else {
+        showToast("無法辨識設定！請確認有複製到包含 apiKey 與 projectId 的代碼", "⚠️");
       }
     };
 
-    // 儲存資料（同時同步至雲端與本地 localStorage）
+    window.testCloudConnectionNow = async function() {
+      const diag = document.getElementById('diagnosticStatusText');
+      if (!db || !isCloudReady) {
+        diag.className = 'text-amber-600 font-bold';
+        diag.innerText = '⚠️ 尚未連線，請貼上設定後點擊「儲存並連線」！';
+        return;
+      }
+      diag.innerText = '⏳ 正在測試寫入與讀取...';
+      try {
+        const sharedDocRef = doc(db, 'seating_system', 'main_state');
+        await setDoc(sharedDocRef, JSON.parse(JSON.stringify(window.store)));
+        diag.className = 'text-emerald-600 font-black';
+        diag.innerText = '🎉 測試成功！資料庫讀寫正常，所有電腦已同步！';
+        showToast("資料庫連線測試成功！", "✨");
+      } catch (err) {
+        diag.className = 'text-rose-600 font-black';
+        diag.innerText = `❌ 測試失敗：${err.message}`;
+        showToast("連線測試失敗：" + err.message, "⚠️");
+      }
+    };
+
+    // 儲存資料（雲端與本地同步寫入）
     window.saveToStorage = async function() {
-      // 1. 本地備份
+      // 1. 本地備份快取
       try {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.store));
       } catch (e) {
@@ -690,12 +773,20 @@
       }
 
       // 2. 雲端同步寫入
-      if (isCloudReady && db && auth && auth.currentUser) {
+      if (isCloudReady && db) {
         try {
-          const sharedDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'seating', 'main_state');
-          await setDoc(sharedDocRef, window.store);
+          const sharedDocRef = doc(db, 'seating_system', 'main_state');
+          // 徹底清理 undefined 值
+          const cleanPayload = JSON.parse(JSON.stringify(window.store, (key, value) => value === undefined ? null : value));
+          await setDoc(sharedDocRef, cleanPayload);
+          console.log("雲端資料已成功同步寫入！");
         } catch (e) {
           console.error("雲端寫入失敗:", e);
+          if (e.code === 'permission-denied') {
+            showToast("⚠️ 儲存失敗：請至 Firebase Firestore 的「規則」改為 allow read, write: if true;", "⚠️");
+          } else {
+            showToast("雲端寫入失敗：" + e.message, "⚠️");
+          }
         }
       }
     };
