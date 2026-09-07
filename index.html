@@ -679,25 +679,16 @@
       const tag = document.getElementById('cloudSyncStatusTag');
       const icon = document.getElementById('cloudSyncIcon');
       const text = document.getElementById('cloudSyncText');
-      const diag = document.getElementById('diagnosticStatusText');
       if (!tag) return;
 
       if (isConnected) {
-        tag.className = 'cursor-pointer flex items-center gap-1.5 text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 shadow-sm hover:bg-blue-100 transition';
+        tag.className = 'flex items-center gap-1.5 text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 shadow-sm select-none pointer-events-none transition';
         icon.innerText = '☁️';
         text.innerText = '雲端即時同步中';
-        if (diag) {
-          diag.className = 'text-emerald-600 font-black';
-          diag.innerText = '✅ 雲端已連線，資料即時同步中！';
-        }
       } else {
-        tag.className = 'cursor-pointer flex items-center gap-1.5 text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-slate-100 text-slate-500 border border-slate-200 shadow-sm hover:bg-purple-50 hover:text-purple-700 transition';
+        tag.className = 'flex items-center gap-1.5 text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-slate-100 text-slate-500 border border-slate-200 shadow-sm select-none pointer-events-none transition';
         icon.innerText = '💻';
         text.innerText = '本地模式 (未連雲端)';
-        if (diag) {
-          diag.className = 'text-slate-500 font-bold';
-          diag.innerText = '📡 目前狀態：尚未連線雲端 (使用本地儲存)';
-        }
       }
     }
 
